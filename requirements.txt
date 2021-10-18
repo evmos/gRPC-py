@@ -1,0 +1,2 @@
+evmosproto==1.0.0
+evmoswallet==1.0.1
