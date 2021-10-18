@@ -3,6 +3,12 @@
 Evmos' grpc messages.
 WIP: Only the `message send` was implemented because is the one used for the faucet.
 
+## Requirements
+
+- Python3.9+
+- Evmos grpc endpoint available
+- Wallet seed (only supports the evmos default algorithm: `ethsecp256k1`)
+
 ## Installation
 
 ```sh
@@ -43,9 +49,13 @@ res = builder.send_tx(Transaction().generate_tx(builder, msg))
 #   raw_log: "[]"
 # }
 
+# To read the response as a dict:
+from google.protobuf.json_format import MessageToDict
+res_obj = MessageToDict(res)
 ```
 
 ## TODO
 
-- Add tests
-- Add more messages
+- Add tests.
+- Add more messages.
+- Add `secp256k1` wallet support on `evmoswallet`.
