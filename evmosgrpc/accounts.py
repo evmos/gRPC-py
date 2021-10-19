@@ -1,9 +1,10 @@
-from google.protobuf.json_format import MessageToDict
+from typing import Union
 
 from evmosproto.cosmos.auth.v1beta1.query_pb2 import QueryAccountRequest
 from evmosproto.cosmos.auth.v1beta1.query_pb2_grpc import QueryStub
 from evmosproto.ethermint.types.v1.account_pb2 import EthAccount
-from typing import Union
+from google.protobuf.json_format import MessageToDict
+
 from evmosgrpc.utils import create_grpc_channel
 
 

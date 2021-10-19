@@ -1,7 +1,3 @@
-import json
-
-from google.protobuf.json_format import Parse
-
 from evmosproto.cosmos.base.v1beta1.coin_pb2 import Coin
 from evmosproto.cosmos.tx.signing.v1beta1.signing_pb2 import SIGN_MODE_DIRECT
 from evmosproto.cosmos.tx.v1beta1.tx_pb2 import AuthInfo
@@ -13,10 +9,15 @@ from evmosproto.cosmos.tx.v1beta1.tx_pb2 import TxBody
 from evmosproto.cosmos.tx.v1beta1.tx_pb2 import TxRaw
 from evmosproto.ethermint.crypto.v1.ethsecp256k1.keys_pb2 import PubKey
 from evmosproto.google.protobuf.any_pb2 import Any
-from google.protobuf.message import Message
-from evmosgrpc.constants import CHAIN_ID, DENOM, FEE, GAS_LIMIT, MEMO
-from evmosgrpc.builder import TransactionBuilder
 from evmoswallet.eth.ethereum import sha3_256
+from google.protobuf.message import Message
+
+from evmosgrpc.builder import TransactionBuilder
+from evmosgrpc.constants import CHAIN_ID
+from evmosgrpc.constants import DENOM
+from evmosgrpc.constants import FEE
+from evmosgrpc.constants import GAS_LIMIT
+from evmosgrpc.constants import MEMO
 
 
 class Transaction:

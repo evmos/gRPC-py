@@ -1,4 +1,5 @@
 import grpc
+
 from evmosgrpc.constants import GRPC_ENDPOINT
 
 

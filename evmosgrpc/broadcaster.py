@@ -1,8 +1,8 @@
-import grpc
-from evmosproto.cosmos.tx.v1beta1.service_pb2_grpc import ServiceStub
-from evmosproto.cosmos.tx.v1beta1.service_pb2 import BroadcastTxRequest
 from evmosproto.cosmos.tx.v1beta1.service_pb2 import BROADCAST_MODE_SYNC
+from evmosproto.cosmos.tx.v1beta1.service_pb2 import BroadcastTxRequest
+from evmosproto.cosmos.tx.v1beta1.service_pb2_grpc import ServiceStub
 from google.protobuf.message import Message
+
 from evmosgrpc.utils import create_grpc_channel
 
 

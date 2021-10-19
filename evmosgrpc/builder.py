@@ -1,6 +1,7 @@
 from evmoswallet import Wallet
-from evmosgrpc.accounts import get_account_grpc
 from google.protobuf.message import Message
+
+from evmosgrpc.accounts import get_account_grpc
 from evmosgrpc.broadcaster import broadcast
 
 
