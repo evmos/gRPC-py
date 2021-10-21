@@ -1,5 +1,7 @@
 # Evmos GRPC
 
+[![PyPI version](https://badge.fury.io/py/evmosgrpc.svg)](https://badge.fury.io/py/evmosgrpc) [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/hanchon-live/evmosgrpc/master.svg)](https://results.pre-commit.ci/latest/github/hanchon-live/evmosgrpc/master)
+
 Evmos' grpc messages.
 WIP: Only the `message send` was implemented because is the one used for the faucet.
 
