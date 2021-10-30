@@ -8,6 +8,8 @@ from evmosproto.cosmos.tx.v1beta1.tx_pb2 import SignerInfo
 from evmosproto.cosmos.tx.v1beta1.tx_pb2 import TxBody
 from evmosproto.cosmos.tx.v1beta1.tx_pb2 import TxRaw
 from evmosproto.ethermint.crypto.v1.ethsecp256k1.keys_pb2 import PubKey
+from evmosproto.cosmos.crypto.secp256k1.keys_pb2 import PubKey as Secp256PubKey
+
 from evmosproto.google.protobuf.any_pb2 import Any
 from evmoswallet.eth.ethereum import sha3_256
 from google.protobuf.message import Message
@@ -18,6 +20,8 @@ from evmosgrpc.constants import DENOM
 from evmosgrpc.constants import FEE
 from evmosgrpc.constants import GAS_LIMIT
 from evmosgrpc.constants import MEMO
+from evmosgrpc.constants import ETHSECP256K1
+from evmosgrpc.constants import SECP256K1
 
 
 class Transaction:
@@ -40,10 +44,19 @@ class Transaction:
 
     def create_signer_info(self):
         signer_info = SignerInfo()
-        pub_key = PubKey()
+        if self.builder.algo == ETHSECP256K1:
+            pub_key = PubKey()
+        elif self.builder.algo == SECP256K1:
+            pub_key = Secp256PubKey()
+        else:
+            raise NotImplemented(f'{self.builer.algo} not supported.')
+
         pub_key.key = self.builder.wallet.public_key
         public_key = Any()
+
         public_key.Pack(pub_key, type_url_prefix='/')
+        print(public_key.type_url)
+        # public_key.type_url= "tendermint/crypto/PublicKey"
         signer_info.public_key.CopyFrom(public_key)
 
         a = ModeInfo()
@@ -61,28 +74,38 @@ class Transaction:
         auth_info.fee.CopyFrom(self.fee)
         self.info = auth_info
 
-    def create_signatures(self):
+    def create_sig_doc(self):
         doc = SignDoc()
         doc.body_bytes = self.body.SerializeToString()
         doc.auth_info_bytes = self.info.SerializeToString()
         doc.chain_id = CHAIN_ID
         doc.account_number = int(self.builder.account_number)
-        to_sign = doc.SerializeToString()
-        to_sign = sha3_256(to_sign).digest()
-        self.signature = self.builder.wallet.sign(to_sign)
+        return doc.SerializeToString()
 
-    def create_tx_raw(self):
+    def create_signatures(self):
+        to_sign = self.create_sig_doc()
+        return self.builder.wallet.sign(sha3_256(to_sign).digest())
+
+    def create_tx_raw(self, signature, body=None, auth_info=None):
         tx = TxRaw()
-        tx.body_bytes = self.body.SerializeToString()
-        tx.auth_info_bytes = self.info.SerializeToString()
-        tx.signatures.append(self.signature)
+        if body is None:
+            tx.body_bytes = self.body.SerializeToString()
+        else:
+            tx.body_bytes = body
+        if auth_info is None:
+            tx.auth_info_bytes = self.info.SerializeToString()
+        else:
+            tx.auth_info_bytes = auth_info
+        tx.signatures.append(signature)
         return tx
 
-    def generate_tx(self, builder: TransactionBuilder, msg: Message):
+    def create_tx_template(self, builder: TransactionBuilder, msg: Message):
         self.builder = builder
         self.create_body_bytes(msg)
         self.create_fee()
         self.create_signer_info()
         self.create_auth_info_bytes()
-        self.create_signatures()
-        return self.create_tx_raw()
+
+    def generate_tx(self, builder: TransactionBuilder, msg: Message):
+        self.create_tx_template(builder, msg)
+        return self.create_tx_raw(self.create_signatures())
