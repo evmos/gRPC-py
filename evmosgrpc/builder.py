@@ -3,7 +3,6 @@ from google.protobuf.message import Message
 
 from evmosgrpc.accounts import get_account_grpc
 from evmosgrpc.broadcaster import broadcast
-
 from evmosgrpc.constants import ETHSECP256K1
 from evmosgrpc.constants import SECP256K1
 

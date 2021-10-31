@@ -8,5 +8,5 @@ CHAIN_ID = os.getenv('CHAIN_ID', 'evmos_9000-1')
 DENOM = os.getenv('DENOM', 'aphoton')
 
 # Types
-ETHSECP256K1 = "ethsecp256k1"
-SECP256K1 = "secp256k1"
+ETHSECP256K1 = 'ethsecp256k1'
+SECP256K1 = 'secp256k1'
