@@ -84,7 +84,7 @@ class Transaction:
         return self.builder.wallet.sign(sha3_256(to_sign).digest())
 
     def create_tx_raw_with_class_info(self, signature):
-        return create_tx_raw(signature, self.body.SerializeToString(), self.info.SerializeToString())
+        return create_tx_raw(self.body.SerializeToString(), self.info.SerializeToString(), signature)
 
     def create_tx_template(self, builder: TransactionBuilder, msg: Message):
         self.builder = builder
@@ -98,9 +98,9 @@ class Transaction:
         return self.create_tx_raw_with_class_info(self.create_signatures())
 
 
-def create_tx_raw(signature, body, auth_info):
+def create_tx_raw(body_bytes, auth_info, signature):
     tx = TxRaw()
-    tx.body_bytes = body
+    tx.body_bytes = body_bytes
     tx.auth_info_bytes = auth_info
     tx.signatures.append(signature)
     return tx
