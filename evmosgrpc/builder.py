@@ -1,3 +1,5 @@
+import base64
+
 import grpc
 from evmoswallet import Wallet
 from google.protobuf.message import Message
@@ -33,10 +35,10 @@ class PubkeyWallet():
 
 class ExternalWallet(TransactionBuilder):
     def __init__(self, address: str, algo: str = SECP256K1, pubkey=None) -> None:
-        self.account_number, self.sequence, pubkey_grpc = get_account_grpc(self.address)
-        if pubkey is not None:
-            self.wallet = PubkeyWallet(pubkey_grpc)
-        else:
-            self.wallet = PubkeyWallet(pubkey)
         self.algo = algo
         self.address = address
+        self.account_number, self.sequence, pubkey_grpc = get_account_grpc(self.address)
+        if pubkey is not None:
+            self.wallet = PubkeyWallet(base64.b64decode(pubkey_grpc))
+        else:
+            self.wallet = PubkeyWallet(pubkey)
