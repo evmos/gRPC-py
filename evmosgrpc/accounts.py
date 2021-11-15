@@ -1,5 +1,7 @@
 from evmosproto.cosmos.auth.v1beta1.query_pb2 import QueryAccountRequest
 from evmosproto.cosmos.auth.v1beta1.query_pb2_grpc import QueryStub
+from evmosproto.cosmos.bank.v1beta1.query_pb2 import QueryAllBalancesRequest
+from evmosproto.cosmos.bank.v1beta1.query_pb2_grpc import QueryStub as BalanceStub
 from evmosproto.ethermint.types.v1.account_pb2 import EthAccount
 from google.protobuf.json_format import MessageToDict
 
@@ -24,3 +26,15 @@ def get_account_grpc(account: str):
         pubkey = account['pubKey']['key']
 
     return account['accountNumber'], account['sequence'], pubkey
+
+
+# Query all the balances
+# TODO: add pagination
+def get_account_all_balances(account: str):
+    # Create channel
+    stub = BalanceStub(create_grpc_channel())
+    params = QueryAllBalancesRequest()
+    params.address = account
+    # Send the request
+    resp = stub.AllBalances(params)
+    return MessageToDict(resp, including_default_value_fields=True)

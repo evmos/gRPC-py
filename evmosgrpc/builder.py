@@ -38,7 +38,7 @@ class ExternalWallet(TransactionBuilder):
         self.algo = algo
         self.address = address
         self.account_number, self.sequence, pubkey_grpc = get_account_grpc(self.address)
-        if pubkey is not None:
+        if pubkey_grpc is not None:
             self.wallet = PubkeyWallet(base64.b64decode(pubkey_grpc))
         else:
             self.wallet = PubkeyWallet(pubkey)
