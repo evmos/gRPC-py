@@ -9,7 +9,7 @@ from evmosgrpc.utils import create_grpc_channel
 def create_broadcast_tx(tx: Message, mode=BROADCAST_MODE_SYNC):
     broadcast_tx = BroadcastTxRequest()
     broadcast_tx.tx_bytes = tx.SerializeToString()
-    broadcast_tx.mode = BROADCAST_MODE_SYNC
+    broadcast_tx.mode = mode
     return broadcast_tx
 
 

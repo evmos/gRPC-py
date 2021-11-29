@@ -24,21 +24,21 @@ from evmosgrpc.constants import SECP256K1
 
 
 class Transaction:
-    def create_body_bytes(self, msg: Message):
+    def create_body_bytes(self, msg: Message, memo: str = MEMO):
         body = TxBody()
         any = Any()
         any.Pack(msg, type_url_prefix='/')
         body.messages.append(any)
-        body.memo = MEMO
+        body.memo = memo
         self.body = body
 
-    def create_fee(self):
+    def create_fee(self, fee: str = FEE, gas_limit: str = GAS_LIMIT):
         coin = Coin()
         coin.denom = DENOM
-        coin.amount = FEE
+        coin.amount = fee
         fee = Fee()
         fee.amount.append(coin)
-        fee.gas_limit = int(GAS_LIMIT)
+        fee.gas_limit = int(gas_limit)
         self.fee = fee
 
     def create_signer_info(self):
@@ -86,15 +86,25 @@ class Transaction:
     def create_tx_raw_with_class_info(self, signature):
         return create_tx_raw(self.body.SerializeToString(), self.info.SerializeToString(), signature)
 
-    def create_tx_template(self, builder: TransactionBuilder, msg: Message):
+    def create_tx_template(self,
+                           builder: TransactionBuilder,
+                           msg: Message,
+                           memo: str = MEMO,
+                           fee: str = FEE,
+                           gas_limit: str = GAS_LIMIT):
         self.builder = builder
-        self.create_body_bytes(msg)
-        self.create_fee()
+        self.create_body_bytes(msg, memo)
+        self.create_fee(fee, gas_limit)
         self.create_signer_info()
         self.create_auth_info_bytes()
 
-    def generate_tx(self, builder: TransactionBuilder, msg: Message):
-        self.create_tx_template(builder, msg)
+    def generate_tx(self,
+                    builder: TransactionBuilder,
+                    msg: Message,
+                    memo: str = MEMO,
+                    fee: str = FEE,
+                    gas_limit: str = GAS_LIMIT):
+        self.create_tx_template(builder, msg, memo, fee, gas_limit)
         return self.create_tx_raw_with_class_info(self.create_signatures())
 
 
