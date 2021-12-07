@@ -30,7 +30,6 @@ def register_erc20_proposal_message(wallet, contract):
     coin.denom = DENOM
     coin.amount = PROPOSAL_MIN_AMOUNT
     p = create_submit_proposal(any, coin, wallet)
-    print(p)
     return p
 
 
