@@ -7,6 +7,7 @@ from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import Parse
 
 from evmosgrpc.constants import DENOM
+from evmosgrpc.constants import PROPOSAL_MIN_AMOUNT
 from evmosgrpc.messages.irm import create_register_coin_proposal
 from evmosgrpc.messages.irm import create_register_erc20_proposal
 
@@ -27,7 +28,7 @@ def register_erc20_proposal_message(wallet, contract):
     any.Pack(proposal, type_url_prefix='/')
     coin = Coin()
     coin.denom = DENOM
-    coin.amount = '20000000000000'
+    coin.amount = PROPOSAL_MIN_AMOUNT
     p = create_submit_proposal(any, coin, wallet)
     print(p)
     return p
@@ -40,7 +41,7 @@ def register_coin_proposal_message(wallet, metadata):
     any.Pack(proposal, type_url_prefix='/')
     coin = Coin()
     coin.denom = DENOM
-    coin.amount = '20000000000000'
+    coin.amount = PROPOSAL_MIN_AMOUNT
     p = create_submit_proposal(any, coin, wallet)
     return p
 
@@ -50,6 +51,16 @@ def toggle_token_proposal_message(wallet, toggle_token):
     any.Pack(toggle_token, type_url_prefix='/')
     coin = Coin()
     coin.denom = DENOM
-    coin.amount = '20000000000000'
+    coin.amount = PROPOSAL_MIN_AMOUNT
+    p = create_submit_proposal(any, coin, wallet)
+    return p
+
+
+def update_token_pair_erc20_proposal_message(wallet, update_token):
+    any = Any()
+    any.Pack(update_token, type_url_prefix='/')
+    coin = Coin()
+    coin.denom = DENOM
+    coin.amount = PROPOSAL_MIN_AMOUNT
     p = create_submit_proposal(any, coin, wallet)
     return p
