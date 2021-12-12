@@ -21,9 +21,8 @@ def create_submit_proposal(content, initial_deposit, proposer):
     return Parse(json.dumps(raw_msg), MsgSubmitProposal())
 
 
-def register_erc20_proposal_message(wallet, contract):
-    proposal = create_register_erc20_proposal('Enable HanchonERC20', 'This is a register erc20 proposal test', contract)
-
+def register_erc20_proposal_message(wallet, contract, title, description):
+    proposal = create_register_erc20_proposal(title, description, contract)
     any = Any()
     any.Pack(proposal, type_url_prefix='/')
     coin = Coin()
@@ -33,8 +32,8 @@ def register_erc20_proposal_message(wallet, contract):
     return p
 
 
-def register_coin_proposal_message(wallet, metadata):
-    proposal = create_register_coin_proposal('Enable COSMOS COIN', 'This is a register coin proposal test', metadata)
+def register_coin_proposal_message(wallet, metadata, title, description):
+    proposal = create_register_coin_proposal(title, description, metadata)
 
     any = Any()
     any.Pack(proposal, type_url_prefix='/')
