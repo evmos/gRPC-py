@@ -4,6 +4,7 @@ from evmosproto.cosmos.base.v1beta1.coin_pb2 import Coin
 from evmosproto.cosmos.gov.v1beta1.query_pb2 import QueryProposalsRequest
 from evmosproto.cosmos.gov.v1beta1.query_pb2_grpc import QueryStub
 from evmosproto.cosmos.gov.v1beta1.tx_pb2 import MsgSubmitProposal
+from evmosproto.cosmos.gov.v1beta1.tx_pb2 import MsgVote
 from evmosproto.google.protobuf.any_pb2 import Any
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import Parse
@@ -70,10 +71,14 @@ def update_token_pair_erc20_proposal_message(wallet, update_token):
 def get_proposals():
     stub = QueryStub(create_grpc_channel())
     params = QueryProposalsRequest()
-    # Send the request
     resp = stub.Proposals(params)
-    # Parse the Any message
-    # account = EthAccount()
-    # account.ParseFromString(resp.account.value)
-    # account = MessageToDict(account, including_default_value_fields=True)['baseAccount']
     return resp
+
+
+def create_vote_message(proposal_id: int, voter: str, option: int):
+    message = {
+        'proposal_id': proposal_id,
+        'voter': voter,
+        'option': option,
+    }
+    return Parse(json.dumps(message), MsgVote())

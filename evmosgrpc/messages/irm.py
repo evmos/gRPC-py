@@ -49,3 +49,27 @@ def create_update_token_pair_proposal(title, description, old_address, new_addre
         'new_erc20_address': new_address
     }
     return Parse(json.dumps(raw_msg), UpdateTokenPairERC20Proposal())
+
+
+def get_IRM_proposals(proposals):
+    ret = []
+    for p in proposals:
+        if (p.content.type_url == '/evmos.intrarelayer.v1.RegisterCoinProposal'
+                or p.content.type_url == '/evmos.intrarelayer.v1.RegisterERC20'):
+            ret.append({
+                'id': p.proposal_id,
+                'type': p.content.type_url,
+                'value': p.content.value,
+                'status': p.status,
+                'total_deposit': p.total_deposit[0].amount,
+                'voting_start_time': f'{p.voting_start_time.seconds}/{p.voting_start_time.nanos}',
+                'voting_end_time': f'{p.voting_end_time.seconds}/{p.voting_end_time.nanos}',
+                'final_tally_result': {
+                    'abstain': p.final_tally_result.abstain,
+                    'no': p.final_tally_result.no,
+                    'yes': p.final_tally_result.yes,
+                    'no_with_veto': p.final_tally_result.no_with_veto,
+                }
+            })
+
+    return ret
