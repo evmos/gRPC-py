@@ -33,13 +33,13 @@ class Transaction:
         self.body = body
 
     def create_fee(self, fee: str = FEE, gas_limit: str = GAS_LIMIT):
-        coin = Coin()
+        coin: Coin = Coin()
         coin.denom = DENOM
         coin.amount = fee
-        fee = Fee()
-        fee.amount.append(coin)
-        fee.gas_limit = int(gas_limit)
-        self.fee = fee
+        feeObject: Fee = Fee()
+        feeObject.amount.append(coin)
+        feeObject.gas_limit = int(gas_limit)
+        self.fee = feeObject
 
     def create_signer_info(self):
         signer_info = SignerInfo()
