@@ -1,6 +1,8 @@
 import json
 
 from evmosproto.cosmos.base.v1beta1.coin_pb2 import Coin
+from evmosproto.cosmos.gov.v1beta1.query_pb2 import QueryProposalsRequest
+from evmosproto.cosmos.gov.v1beta1.query_pb2_grpc import QueryStub
 from evmosproto.cosmos.gov.v1beta1.tx_pb2 import MsgSubmitProposal
 from evmosproto.google.protobuf.any_pb2 import Any
 from google.protobuf.json_format import MessageToDict
@@ -10,6 +12,7 @@ from evmosgrpc.constants import DENOM
 from evmosgrpc.constants import PROPOSAL_MIN_AMOUNT
 from evmosgrpc.messages.irm import create_register_coin_proposal
 from evmosgrpc.messages.irm import create_register_erc20_proposal
+from evmosgrpc.utils import create_grpc_channel
 
 
 def create_submit_proposal(content, initial_deposit, proposer):
@@ -62,3 +65,15 @@ def update_token_pair_erc20_proposal_message(wallet, update_token):
     coin.amount = PROPOSAL_MIN_AMOUNT
     p = create_submit_proposal(any, coin, wallet)
     return p
+
+
+def get_proposals():
+    stub = QueryStub(create_grpc_channel())
+    params = QueryProposalsRequest()
+    # Send the request
+    resp = stub.Proposals(params)
+    # Parse the Any message
+    # account = EthAccount()
+    # account.ParseFromString(resp.account.value)
+    # account = MessageToDict(account, including_default_value_fields=True)['baseAccount']
+    return resp
