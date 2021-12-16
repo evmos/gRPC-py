@@ -55,7 +55,7 @@ def get_IRM_proposals(proposals):
     ret = []
     for p in proposals:
         if (p.content.type_url == '/evmos.intrarelayer.v1.RegisterCoinProposal'
-                or p.content.type_url == '/evmos.intrarelayer.v1.RegisterERC20'):
+                or p.content.type_url == '/evmos.intrarelayer.v1.RegisterERC20Proposal'):
             ret.append({
                 'id': p.proposal_id,
                 'type': p.content.type_url,
