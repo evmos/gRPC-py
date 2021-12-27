@@ -24,6 +24,7 @@ from evmosgrpc.constants import SECP256K1
 
 
 class Transaction:
+
     def create_body_bytes(self, msg: Message, memo: str = MEMO):
         body = TxBody()
         any = Any()
