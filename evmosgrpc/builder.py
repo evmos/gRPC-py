@@ -11,6 +11,7 @@ from evmosgrpc.constants import SECP256K1
 
 
 class TransactionBuilder():
+
     def __init__(self, seed: str) -> None:
         self.wallet = Wallet(seed)
         self.algo = ETHSECP256K1
@@ -29,11 +30,13 @@ class TransactionBuilder():
 
 
 class PubkeyWallet():
+
     def __init__(self, pubkey) -> None:
         self.public_key = pubkey
 
 
 class ExternalWallet(TransactionBuilder):
+
     def __init__(self, address: str, algo: str = SECP256K1, pubkey=None) -> None:
         self.algo = algo
         self.address = address
